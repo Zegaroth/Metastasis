@@ -1,0 +1,174 @@
+[gd_scene load_steps=21 format=3 uid="uid://dxwbfi5unxco7"]
+
+[ext_resource type="Script" path="res://scripts/base_ai.gd" id="1_cted1"]
+[ext_resource type="Texture2D" uid="uid://dw8324tqql6ka" path="res://assets/jester_attack.png" id="2_ilpxj"]
+[ext_resource type="Texture2D" uid="uid://blg673p74met4" path="res://assets/jesteridle.png" id="2_nda18"]
+[ext_resource type="Texture2D" uid="uid://c1own654shv8l" path="res://assets/jester_walk1.png" id="3_nku76"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_p18yu"]
+[ext_resource type="Script" path="res://scripts/idle.gd" id="4_5ajp1"]
+[ext_resource type="Texture2D" uid="uid://cgstbxuyoj2t2" path="res://assets/jester_walk2.png" id="4_jkk77"]
+[ext_resource type="Texture2D" uid="uid://du5rv0necy7b6" path="res://assets/jester_telegraph.png" id="4_vjml5"]
+[ext_resource type="Script" path="res://scripts/random_timer.gd" id="5_efpig"]
+[ext_resource type="Script" path="res://scripts/wandering.gd" id="6_08wii"]
+[ext_resource type="Script" path="res://scripts/chase.gd" id="7_fcbrb"]
+[ext_resource type="Script" path="res://scripts/attack.gd" id="8_r8ubi"]
+[ext_resource type="Script" path="res://scripts/health_system.gd" id="13_eyqub"]
+[ext_resource type="Theme" uid="uid://cxvn7u6407v7g" path="res://ui.theme" id="14_r78pg"]
+[ext_resource type="Script" path="res://scripts/life_bar.gd" id="15_2f0ix"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bs6w5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ilpxj")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_nda18")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_vjml5")
+}],
+"loop": true,
+"name": &"telegraph",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_nku76")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jkk77")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21rgk"]
+radius = 19.105
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_svffc"]
+radius = 7.0
+height = 28.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vlk5c"]
+radius = 25.0
+height = 64.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xe42e"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("HealthSystem:current_health")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
+[node name="BasicAI" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 32
+script = ExtResource("1_cted1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_bs6w5")
+animation = &"attack"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_21rgk")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_p18yu")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_5ajp1")
+
+[node name="IdleTimer" type="Timer" parent="StateMachine/Idle"]
+one_shot = true
+script = ExtResource("5_efpig")
+
+[node name="RotationTimer" type="Timer" parent="StateMachine/Idle"]
+one_shot = true
+script = ExtResource("5_efpig")
+min_time = 0.2
+max_time = 1.0
+
+[node name="Wandering" type="Node" parent="StateMachine"]
+script = ExtResource("6_08wii")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("7_fcbrb")
+
+[node name="ChaseTimer" type="Timer" parent="StateMachine/Chase"]
+one_shot = true
+script = ExtResource("5_efpig")
+min_time = 0.5
+max_time = 3.0
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("8_r8ubi")
+
+[node name="StateLabel" type="Label" parent="."]
+offset_left = -34.0
+offset_top = 26.0
+offset_right = 54.0
+offset_bottom = 59.0
+
+[node name="RayCastHolder" type="Node2D" parent="."]
+
+[node name="VisionRayCast2D" type="RayCast2D" parent="RayCastHolder"]
+target_position = Vector2(174, 0)
+collide_with_areas = true
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(15, 0)
+shape = SubResource("CapsuleShape2D_svffc")
+
+[node name="AttackHitbox" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2(15, 0)
+shape = SubResource("CapsuleShape2D_vlk5c")
+
+[node name="HealthSystem" type="Node2D" parent="."]
+script = ExtResource("13_eyqub")
+
+[node name="LifeBar" type="ProgressBar" parent="."]
+offset_left = -20.0
+offset_top = -35.0
+offset_right = 20.0
+offset_bottom = -30.0
+theme = ExtResource("14_r78pg")
+show_percentage = false
+script = ExtResource("15_2f0ix")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xe42e")
+
+[connection signal="timeout" from="StateMachine/Idle/IdleTimer" to="StateMachine/Idle" method="_on_idle_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Idle/RotationTimer" to="StateMachine/Idle" method="_on_rotation_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Chase/ChaseTimer" to="StateMachine/Chase" method="_on_chase_timer_timeout"]
+[connection signal="body_entered" from="AttackArea" to="StateMachine/Chase" method="_on_attack_area_body_entered"]
+[connection signal="body_entered" from="AttackHitbox" to="StateMachine/Attack" method="_on_attack_hitbox_body_entered"]
+[connection signal="body_exited" from="AttackHitbox" to="StateMachine/Attack" method="_on_attack_hitbox_body_exited"]
