@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://drbkcljfyrnmv"]
+[gd_scene load_steps=15 format=3 uid="uid://drbkcljfyrnmv"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_x0551"]
 [ext_resource type="Texture2D" uid="uid://dq352abro8wf7" path="res://assets/marine_idle.png" id="2_1ak14"]
@@ -31,6 +31,8 @@ animations = [{
 "name": &"walk",
 "speed": 5.0
 }]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_odhtx"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5sqlw"]
 radius = 20.0
@@ -82,6 +84,9 @@ properties/13/replication_mode = 1
 properties/14/path = NodePath("Retina:scale")
 properties/14/spawn = true
 properties/14/replication_mode = 1
+properties/15/path = NodePath(".:navdir")
+properties/15/spawn = true
+properties/15/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_45w7k"]
 properties/0/path = NodePath("InputSynchronizer:isUp")
@@ -111,6 +116,12 @@ properties/7/replication_mode = 1
 properties/8/path = NodePath("InputSynchronizer:mouse_pos")
 properties/8/spawn = true
 properties/8/replication_mode = 1
+properties/9/path = NodePath("InputSynchronizer:mouse_position")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath("Camera2D:zoom")
+properties/10/spawn = true
+properties/10/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" groups=["players"]]
 collision_mask = 2
@@ -128,6 +139,9 @@ frame_progress = 0.805838
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="NavigationSynchronizer" type="MultiplayerSynchronizer" parent="NavigationAgent2D"]
+replication_config = SubResource("SceneReplicationConfig_odhtx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 4)

@@ -12,6 +12,7 @@ var esc
 @export var angle := float(0)
 @export var mouse_rel = Vector2.ZERO
 @export var mouse_pos = Vector2.ZERO
+@export var mouse_position = Vector2.ZERO
 var screen = Vector2.ZERO  
 
 func _ready():
@@ -26,11 +27,15 @@ func _ready():
 	isDown = Input.is_action_pressed("down")
 	isLeft = Input.is_action_pressed("left")
 	isRight = Input.is_action_pressed("right")
-	rightClicked = Input.is_action_just_pressed("rightclick")
+	rightClicked = Input.is_action_pressed("rightclick")
 	esc = Input.is_action_pressed("esc")
 	
 func _input(event):
 	if event is InputEventMouseMotion:
+		mouse_position = get_viewport().get_mouse_position()
+		mouse_position -= (get_viewport().get_visible_rect().size/2) #adjust for screen size
+		mouse_position /= $"../Camera2D".zoom.x #offset for camera zoom
+		mouse_position += player.global_position #offset for position of player
 		mouse_pos = Vector2(event.position)
 		mouse_rel = mouse_pos - screen
 		angle = atan2(mouse_rel.y, mouse_rel.x) # returns an angle
@@ -40,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	isDown = Input.is_action_pressed("down")
 	isLeft = Input.is_action_pressed("left")
 	isRight = Input.is_action_pressed("right")
-	rightClicked = Input.is_action_just_pressed("rightclick")
+	rightClicked = Input.is_action_pressed("rightclick")
 	esc = Input.is_action_pressed("esc")
 	if esc:
 		quitgame()

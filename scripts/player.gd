@@ -24,6 +24,7 @@ class_name Player
 @onready var retina: Sprite2D = $Retina
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
+@export var navdir = Vector2()
 @export var wasd_moving = false
 @export var rightclick_moving = false
 @export var walking = false
@@ -51,10 +52,10 @@ func _apply_animations(delta):
 		animated_sprite_2d.play("walk")
 	else:
 		animated_sprite_2d.play("default")
-	if (input_synchronizer.mouse_rel.x > global_position.x) and !h_scale:
+	if (input_synchronizer.mouse_position.x > global_position.x) and !h_scale:
 		self.transform.x *= -1.0
 		h_scale=true
-	elif (input_synchronizer.mouse_rel.x < global_position.x) and h_scale:
+	elif (input_synchronizer.mouse_position.x < global_position.x) and h_scale:
 		self.transform.x *= -1.0
 		h_scale=false
 	
@@ -64,9 +65,10 @@ func _apply_movement_from_input(delta):
 	movement_dir = Vector2.ZERO
 	walking = false
 	if $InputSynchronizer.rightClicked:
+		print_debug("ricghtlicked")
 		wasd_moving = false
 		rightclick_moving = true
-		rightclickpos = input_synchronizer.mouse_rel
+		rightclickpos = input_synchronizer.mouse_position
 	
 	if $InputSynchronizer.isUp:
 		wasd_moving = true
@@ -96,7 +98,8 @@ func _apply_movement_from_input(delta):
 	
 	#set up nav for right click
 	if rightclick_moving:
-		var navdir = Vector2()
+		#navdir = Vector2()
+		#global_position = rightclickpos
 		nav.target_position  = rightclickpos
 		navdir = nav.get_next_path_position() - global_position
 		navdir = navdir.normalized()
