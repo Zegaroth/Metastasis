@@ -7,6 +7,7 @@ var isDown
 var isLeft
 var isRight
 var rightClicked
+var leftClicked
 var esc
 
 @export var angle := float(0)
@@ -28,6 +29,7 @@ func _ready():
 	isLeft = Input.is_action_pressed("left")
 	isRight = Input.is_action_pressed("right")
 	rightClicked = Input.is_action_pressed("rightclick")
+	leftClicked = Input.is_action_pressed("leftclick")
 	esc = Input.is_action_pressed("esc")
 	
 func _input(event):
@@ -46,22 +48,28 @@ func _physics_process(delta: float) -> void:
 	isLeft = Input.is_action_pressed("left")
 	isRight = Input.is_action_pressed("right")
 	rightClicked = Input.is_action_pressed("rightclick")
+	leftClicked = Input.is_action_pressed("leftclick")
 	esc = Input.is_action_pressed("esc")
 	if esc:
 		quitgame()
 	
 
 func quitgame():
-	if multiplayer.is_server():
-		multiplayer.peer_disconnected.connect(delete_player)
-		delete_player(player.player_id)
+	#get_node
+	multiplayer.peer_disconnected.connect(delete_player)
+	delete_player(player.player_id)
 
 func delete_player(id):
 	_delete_player.rpc(id)
+	get_tree().quit()
 	
 @rpc("any_peer", "call_local")
 func _delete_player(id):
-	get_node(str(id)).queue_free()
+	#var players = get_tree().get_nodes_in_group("players")
+	#for player in players
+	player.queue_free()
+	if(player.player_id==1):#peer should quit if host does
+		get_tree().quit()
 
 func _process(delta):
 	pass

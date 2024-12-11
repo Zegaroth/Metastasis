@@ -87,6 +87,27 @@ properties/14/replication_mode = 1
 properties/15/path = NodePath(".:navdir")
 properties/15/spawn = true
 properties/15/replication_mode = 1
+properties/16/path = NodePath(".:projectile_dmg")
+properties/16/spawn = true
+properties/16/replication_mode = 1
+properties/17/path = NodePath(".:seconds_between_shots")
+properties/17/spawn = true
+properties/17/replication_mode = 1
+properties/18/path = NodePath(".:spread")
+properties/18/spawn = true
+properties/18/replication_mode = 1
+properties/19/path = NodePath(".:speed")
+properties/19/spawn = true
+properties/19/replication_mode = 1
+properties/20/path = NodePath("Retina/ShootingSystem:shooting")
+properties/20/spawn = true
+properties/20/replication_mode = 1
+properties/21/path = NodePath("Retina/ShootingSystem:seconds_between_shots")
+properties/21/spawn = true
+properties/21/replication_mode = 1
+properties/22/path = NodePath("Retina/ShootingSystem:spread")
+properties/22/spawn = true
+properties/22/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_45w7k"]
 properties/0/path = NodePath("InputSynchronizer:isUp")
@@ -122,6 +143,9 @@ properties/9/replication_mode = 1
 properties/10/path = NodePath("Camera2D:zoom")
 properties/10/spawn = true
 properties/10/replication_mode = 1
+properties/11/path = NodePath("InputSynchronizer:leftClicked")
+properties/11/spawn = true
+properties/11/replication_mode = 1
 
 [node name="Player" type="CharacterBody2D" groups=["players"]]
 collision_mask = 2

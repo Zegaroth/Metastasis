@@ -28,13 +28,13 @@ func _add_player(id = 1):
 	main_node.add_child(player, true)
 	#call_deferred("add_child", player)
 
-func exit_game(id):
-	multiplayer.peer_disconnected.connect(delete_player)
-	delete_player(id)
+#func exit_game(id):
+#	multiplayer.peer_disconnected.connect(delete_player)
+#	delete_player(id)
 
-func delete_player(id):
-	rpc('_delete_player', id)
+#func delete_player(id):
+#	rpc('_delete_player', id)
 	
-@rpc("any_peer", "call_local")
-func _delete_player(id):
-	get_node(str(id)).queue_free()
+#@rpc("any_peer", "call_local")
+#func _delete_player(id):
+#	get_node(str(id)).queue_free()

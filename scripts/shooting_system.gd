@@ -3,9 +3,9 @@ extends Marker2D
 class_name ShootingSystem
 
 signal shot
-var shooting = false
-var seconds_between_shots: float
-var spread: float
+@export var shooting = false
+@export var seconds_between_shots: float
+@export var spread: float
 
 @onready var projectile_scene = preload("res://scenes/projectile.tscn")
 
@@ -13,25 +13,24 @@ var spread: float
 func _ready():
 	seconds_between_shots = owner.seconds_between_shots
 	spread = owner.spread
-func _input(event):
-	if !owner.is_multiplayer_authority():
-		return
-	if Input.is_action_just_pressed("leftclick"):
-		shooting = true
-	if Input.is_action_just_released("leftclick"):
-		shooting = false
+
 func _physics_process(delta: float) -> void:
-	if shooting:
+	if $"../../InputSynchronizer".leftClicked:
+		shooting = true
+	if !$"../../InputSynchronizer".leftClicked:
+		shooting = false
+	if shooting and multiplayer.is_server():
 		wait(seconds_between_shots)
 		shoot()
-		#rpc('shoot')
+		#shoot.rpc()
 		
 
 #@rpc("any_peer", "call_local", "reliable")
 #@rpc("call_local")
+#@rpc("any_peer", "call_local" )
 func shoot():
-	if !owner.is_multiplayer_authority():
-		return
+	#if !owner.is_multiplayer_authority():
+	#	return
 	#var spawner = get_node("/root/Main/MultiplayerSpawner")
 	var projectile = projectile_scene.instantiate() as Projectile
 	projectile.name = "Bullet_" + str(Time.get_ticks_msec())  # Unique name based on time
@@ -47,7 +46,7 @@ func shoot():
 	#get_node("/root/Main").add_child(projectile, true)
 	#projectile.set_network_master(get_tree().get_network_unique_id())
 	
-	var move_direction = (get_global_mouse_position() - global_position).normalized()
+	var move_direction = ($"../../InputSynchronizer".mouse_position - global_position).normalized()
 	var deviation_angle = PI * spread
 	projectile.move_direction = move_direction
 	projectile.global_position = global_position
