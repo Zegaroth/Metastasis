@@ -28,12 +28,13 @@ var current_speed
 
 func _ready():
 	current_speed = wandering_speed
-	
+	$LifeBar.set_as_top_level(true)
 	health_system.died.connect(on_died)
 	
 func _process(delta):
 	$RayCastHolder.rotate(.5)
 	search_for_player_with_raycast()
+	$LifeBar.global_position = $LifeBarPosition.global_position
 
 func move_to_position(target_position: Vector2):
 	var motion = position.direction_to(target_position) * current_speed
@@ -41,13 +42,13 @@ func move_to_position(target_position: Vector2):
 	#$RayCastHolder.look_at(target_position)
 	if (target_position.x > global_position.x) and !h_scale:
 		self.transform.x *= -1.0
-		$LifeBar.scale.x *= -1.0
-		$LifeBar.pivot_offset.x -= 20
+		#$LifeBar.scale.x *= -1.0
+		#$LifeBar.pivot_offset.x -= 20
 		h_scale=true
 	elif (target_position.x < global_position.x) and h_scale:
 		self.transform.x *= -1.0
-		$LifeBar.scale.x *= -1.0
-		$LifeBar.pivot_offset.x += 20
+		#$LifeBar.scale.x *= -1.0
+		#$LifeBar.pivot_offset.x += 20
 		h_scale=false
 	if str(self.transform.x.x) == "-0": self.transform.x.x=0
 	if str(self.transform.x.y) == "-0": self.transform.x.y=0
@@ -74,4 +75,8 @@ func search_for_player_with_raycast():
 func take_damage(damage: int):
 	health_system.take_damage(damage)
 func on_died():
+	queue_free()
+
+
+func _on_health_system_died() -> void:
 	queue_free()

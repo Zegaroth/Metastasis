@@ -47,9 +47,11 @@ func exit():
 	
 
 func _on_attack_hitbox_body_entered(body: Node2D) -> void:
-	player_is_in_hitbox = true
+	if body == state_machine.player_chasing:
+		player_is_in_hitbox = true
 
 func _on_attack_hitbox_body_exited(body: Node2D) -> void:
-	player_is_in_hitbox = false
+	if body == state_machine.player_chasing:
+		player_is_in_hitbox = false
 	if body == state_machine.player_chasing and !owner.locked_in_attack:
 		state_machine.transition_to("Chase")

@@ -13,6 +13,7 @@ func _ready():
 	
 func take_damage(damage: int):
 	current_health -= damage
+	#print(current_health)
 	damage_taken.emit(current_health)
 	if current_health <= 0:
 		died.emit()

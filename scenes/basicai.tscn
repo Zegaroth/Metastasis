@@ -163,6 +163,9 @@ theme = ExtResource("14_r78pg")
 show_percentage = false
 script = ExtResource("15_2f0ix")
 
+[node name="LifeBarPosition" type="Node2D" parent="."]
+position = Vector2(-20, -35)
+
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_xe42e")
 
@@ -172,3 +175,4 @@ replication_config = SubResource("SceneReplicationConfig_xe42e")
 [connection signal="body_entered" from="AttackArea" to="StateMachine/Chase" method="_on_attack_area_body_entered"]
 [connection signal="body_entered" from="AttackHitbox" to="StateMachine/Attack" method="_on_attack_hitbox_body_entered"]
 [connection signal="body_exited" from="AttackHitbox" to="StateMachine/Attack" method="_on_attack_hitbox_body_exited"]
+[connection signal="died" from="HealthSystem" to="." method="_on_health_system_died"]
