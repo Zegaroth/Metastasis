@@ -77,4 +77,12 @@ position = Vector2(320, 1216)
 _spawnable_scenes = PackedStringArray("res://scenes/player.tscn", "res://scenes/projectile.tscn", "res://scenes/basicai.tscn")
 spawn_path = NodePath("..")
 
+[node name="SpawnLocations" type="Node2D" parent="."]
+
+[node name="0" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
+position = Vector2(-70, 0)
+
+[node name="1" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
+position = Vector2(50, 0)
+
 [connection signal="body_entered" from="Environment/Test/Area2D" to="Environment/Test/Area2D" method="_on_body_entered"]
