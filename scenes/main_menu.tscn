@@ -1,32 +1,58 @@
-[gd_scene load_steps=2 format=3 uid="uid://b15bbrunovs7o"]
+[gd_scene load_steps=3 format=3 uid="uid://b15bbrunovs7o"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_67now"]
+[ext_resource type="Script" path="res://scenes/server_browser.gd" id="2_cthga"]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_67now")
 
-[node name="SinglePlayerButton" type="Button" parent="."]
-offset_left = 15.0
-offset_top = 12.0
-offset_right = 23.0
-offset_bottom = 20.0
-text = "SinglePlayer
-"
-
 [node name="HostButton" type="Button" parent="."]
-offset_left = 15.0
-offset_top = 55.0
-offset_right = 59.0
-offset_bottom = 86.0
+offset_left = 108.0
+offset_top = 25.0
+offset_right = 152.0
+offset_bottom = 56.0
 text = "Host"
 
 [node name="JoinButton" type="Button" parent="."]
-offset_left = 75.0
-offset_top = 54.0
-offset_right = 113.0
-offset_bottom = 85.0
+offset_left = 168.0
+offset_top = 24.0
+offset_right = 206.0
+offset_bottom = 55.0
 text = "Join"
 
-[connection signal="pressed" from="SinglePlayerButton" to="." method="_on_single_player_button_pressed"]
-[connection signal="pressed" from="HostButton" to="." method="_on_host_button_pressed"]
-[connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]
+[node name="ServerBrowser" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_cthga")
+
+[node name="BroadcastTimer" type="Timer" parent="ServerBrowser"]
+autostart = true
+
+[node name="StartGameButton" type="Button" parent="."]
+offset_left = 114.0
+offset_top = 70.0
+offset_right = 210.0
+offset_bottom = 101.0
+text = "Start Game"
+
+[node name="LineEdit" type="LineEdit" parent="."]
+offset_left = 76.0
+offset_top = 147.0
+offset_right = 276.0
+offset_bottom = 188.0
+text = "default"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 122.0
+offset_top = 116.0
+offset_right = 162.0
+offset_bottom = 139.0
+text = "NAME:"
+
+[connection signal="button_down" from="HostButton" to="." method="_on_host_button_button_down"]
+[connection signal="button_down" from="JoinButton" to="." method="_on_join_button_button_down"]
+[connection signal="timeout" from="ServerBrowser/BroadcastTimer" to="ServerBrowser" method="_on_broadcast_timer_timeout"]
+[connection signal="button_down" from="StartGameButton" to="." method="_on_start_game_button_button_down"]
+[connection signal="ready" from="StartGameButton" to="." method="_on_start_game_button_ready"]

@@ -85,4 +85,6 @@ position = Vector2(-70, 0)
 [node name="1" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
 position = Vector2(50, 0)
 
+[node name="DefaultSpawn" type="Node2D" parent="SpawnLocations"]
+
 [connection signal="body_entered" from="Environment/Test/Area2D" to="Environment/Test/Area2D" method="_on_body_entered"]

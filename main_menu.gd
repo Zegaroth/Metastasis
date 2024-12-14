@@ -2,21 +2,76 @@ extends Node2D
 
 #var peer = ENetMultiplayerPeer.new()
 #@export var playerscene: PackedScene 
+const SERVER_PORT = 8080
+const SERVER_IP = "127.0.0.1"
 
-var hosting = false
+var server_peer
+var client_peer
 
-func _on_single_player_button_pressed() -> void:
-	pass
-	#get_tree().change_scene_to_file("res://scenes/main.tscn")
+func _ready():
+	multiplayer.peer_connected.connect(_peer_connected) #called on server plus clients
+	multiplayer.peer_disconnected.connect(_disconnected_from_server)#called on server plus clients
+	multiplayer.connected_to_server.connect(_connected_to_server)#called on clients only
+	multiplayer.connection_failed.connect(_connected_failed)#called on clients only
+	#used for non-player application as server
+	if "--server" in OS.get_cmdline_args():
+		hostgame()
 
-func _on_host_button_pressed() -> void:
-	MainMenu.hosting = true
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
-	#var nextlevel = load("res://scenes/main.tscn").instance()
+func _peer_connected(id):#called on server and clients
+	print("Player connected: " + str(id) + ":>")
+func _disconnected_from_server(id):#called on server and clients
+	print("Player disconnected: " + str(id) + ":>")
+	GameManager.Players.erase(id)
+	var players = get_tree().get_nodes_in_group("Player")
+	for i in players:
+		if i.name == str(id):
+			i.queue_free()
+func _connected_to_server():#called on clients
+	print("Connected to server!")
+	sendPlayerInfo.rpc_id(1, $LineEdit.text, multiplayer.get_unique_id())
+func _connected_failed():#called on clients
+	print("Could not connect to server!")
+
+
+@rpc("any_peer")
+func sendPlayerInfo(name, id):
+	if !GameManager.players.has(id):
+		GameManager.players[id] = {
+			"name": name,
+			"id": id,
+		}
+	if multiplayer.is_server():
+		for i in GameManager.players:
+			sendPlayerInfo.rpc(GameManager.players[i].name, i)
+	
+func hostgame():
+	server_peer = ENetMultiplayerPeer.new()
+	var error = server_peer.create_server(SERVER_PORT)
+	if error != OK:
+		print("Cannot host: " + error)
+		return
+	server_peer.get_host().compress(ENetConnection.COMPRESS_ZLIB)
+	multiplayer.set_multiplayer_peer(server_peer)
+	print("Waiting for players...")
 	
 
-func _on_join_button_pressed() -> void:
-	MainMenu.hosting = false
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
-	#var nextlevel = load("res://scenes/main.tscn").instance()
-	
+@rpc("any_peer", "call_local")
+func startGame():
+	var scene = load("res://scenes/main.tscn").instantiate()
+	get_tree().root.add_child(scene)
+	self.hide()
+
+func _on_host_button_button_down() -> void:
+	GameManager.hostButtonPressed = true
+	hostgame()
+	sendPlayerInfo($LineEdit.text, multiplayer.get_unique_id())
+
+func _on_join_button_button_down() -> void:
+	client_peer = ENetMultiplayerPeer.new()
+	client_peer.create_client(SERVER_IP, SERVER_PORT)
+	client_peer.get_host().compress(ENetConnection.COMPRESS_ZLIB)
+	multiplayer.set_multiplayer_peer(client_peer)
+
+
+func _on_start_game_button_button_down() -> void:
+	startGame.rpc()

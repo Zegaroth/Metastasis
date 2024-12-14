@@ -11,7 +11,7 @@ class_name Player
 @onready var player_ui: CanvasLayer = $PlayerUI as PlayerUI
 @onready var input_synchronizer: MultiplayerSynchronizer = $InputSynchronizer
 
-
+var foundSpawn = false
 @export var speed: int = 300 #used for reticle
 @export var rightclickaccel: int = 7
 #@export var rot_speed: int = 5 #used for rotating ships
@@ -65,7 +65,6 @@ func _apply_movement_from_input(delta):
 	movement_dir = Vector2.ZERO
 	walking = false
 	if $InputSynchronizer.rightClicked:
-		print_debug("ricghtlicked")
 		wasd_moving = false
 		rightclick_moving = true
 		rightclickpos = input_synchronizer.mouse_position
@@ -122,7 +121,7 @@ func _apply_movement_from_input(delta):
 func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
 		_apply_movement_from_input(delta)
-	if not multiplayer.is_server() || MainMenu.hosting:
+	if not multiplayer.is_server() || GameManager.hostButtonPressed:
 		_apply_animations(delta)
 func _input(event):
 	pass
