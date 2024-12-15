@@ -8,10 +8,10 @@ func _ready():
 		return
 	var index = 0
 	for i in GameManager.players:
-		print(index)
+		#print(GameManager.players[i])
 		var currentPlayer =  playerscene.instantiate()
 		currentPlayer.player_id = GameManager.players[i].id
-		currentPlayer.name = str(GameManager.players[i].id) 
+		currentPlayer.name = str(GameManager.players[i].id)# + str(Time.get_ticks_msec())  # Unique name based on time
 		main.add_child(currentPlayer)
 		for spawnpoint in get_tree().get_nodes_in_group("spawnpoint"):
 			if spawnpoint.name == str(index):

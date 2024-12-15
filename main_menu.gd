@@ -5,10 +5,14 @@ extends Node2D
 const SERVER_PORT = 8080
 const SERVER_IP = "127.0.0.1"
 
+@export var tellHostToStartGame: bool
+var hostHasStartedGame = false
+
 var server_peer
 var client_peer
 
 func _ready():
+	tellHostToStartGame = false
 	multiplayer.peer_connected.connect(_peer_connected) #called on server plus clients
 	multiplayer.peer_disconnected.connect(_disconnected_from_server)#called on server plus clients
 	multiplayer.connected_to_server.connect(_connected_to_server)#called on clients only
@@ -19,6 +23,9 @@ func _ready():
 
 func _peer_connected(id):#called on server and clients
 	print("Player connected: " + str(id) + ":>")
+	#$MainMenuSynchronizer.set_multiplayer_authority(multiplayer.get_unique_id())
+	#$".".set_multiplayer_authority(multiplayer.get_unique_id())
+	#_setAuth.rpc()
 func _disconnected_from_server(id):#called on server and clients
 	print("Player disconnected: " + str(id) + ":>")
 	GameManager.Players.erase(id)
@@ -32,6 +39,10 @@ func _connected_to_server():#called on clients
 func _connected_failed():#called on clients
 	print("Could not connect to server!")
 
+#@rpc("any_peer")
+#func _setAuth():
+#	$MainMenuSynchronizer.set_multiplayer_authority(multiplayer.get_unique_id())
+#	$".".set_multiplayer_authority(multiplayer.get_unique_id())
 
 @rpc("any_peer")
 func sendPlayerInfo(name, id):
@@ -48,12 +59,11 @@ func hostgame():
 	server_peer = ENetMultiplayerPeer.new()
 	var error = server_peer.create_server(SERVER_PORT)
 	if error != OK:
-		print("Cannot host: " + error)
+		print("Cannot host: " + str(error))
 		return
 	server_peer.get_host().compress(ENetConnection.COMPRESS_ZLIB)
 	multiplayer.set_multiplayer_peer(server_peer)
 	print("Waiting for players...")
-	
 
 @rpc("any_peer", "call_local")
 func startGame():
@@ -72,6 +82,24 @@ func _on_join_button_button_down() -> void:
 	client_peer.get_host().compress(ENetConnection.COMPRESS_ZLIB)
 	multiplayer.set_multiplayer_peer(client_peer)
 
+func _process(delta: float) -> void:
+	#print(is_multiplayer_authority())
+	#if(GameManager.hostButtonPressed):
+	#	print("Host:"+str(tellHostToStartGame))
+	#else:
+	#	print("Peer:"+str(tellHostToStartGame))
+	if tellHostToStartGame and !hostHasStartedGame:
+		_on_start_game_button_button_down()
+		hostHasStartedGame = true
+		
 
 func _on_start_game_button_button_down() -> void:
-	startGame.rpc()
+	if multiplayer.is_server():
+		startGame.rpc()
+	else:
+		#tellHostToStartGame = true
+		_setTellHostToStartGame.rpc()
+
+@rpc("any_peer")
+func _setTellHostToStartGame():
+	tellHostToStartGame = true
