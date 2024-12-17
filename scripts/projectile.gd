@@ -29,5 +29,6 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
-	if  multiplayer.is_server():
-		queue_free()
+	#if  multiplayer.is_server():
+	#	queue_free()
+	pass
