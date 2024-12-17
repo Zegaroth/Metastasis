@@ -2,7 +2,7 @@ extends Node2D
 
 #var peer = ENetMultiplayerPeer.new()
 #@export var playerscene: PackedScene 
-const SERVER_PORT = 8080
+const SERVER_PORT = 8910
 const SERVER_IP = "127.0.0.1"
 
 @export var tellHostToStartGame: bool
@@ -20,6 +20,7 @@ func _ready():
 	#used for non-player application as server
 	if "--server" in OS.get_cmdline_args():
 		hostgame()
+	$ServerBrowser.joinGame.connect(JoinByIP)
 
 func _peer_connected(id):#called on server and clients
 	print("Player connected: " + str(id) + ":>")
@@ -75,10 +76,14 @@ func _on_host_button_button_down() -> void:
 	GameManager.hostButtonPressed = true
 	hostgame()
 	sendPlayerInfo($LineEdit.text, multiplayer.get_unique_id())
+	$ServerBrowser.setUpBroadcast($LineEdit.text+"'s server")
 
 func _on_join_button_button_down() -> void:
+	JoinByIP(SERVER_IP)
+
+func JoinByIP(ip):
 	client_peer = ENetMultiplayerPeer.new()
-	client_peer.create_client(SERVER_IP, SERVER_PORT)
+	client_peer.create_client(ip, SERVER_PORT)
 	client_peer.get_host().compress(ENetConnection.COMPRESS_ZLIB)
 	multiplayer.set_multiplayer_peer(client_peer)
 

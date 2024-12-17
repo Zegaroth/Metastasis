@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3 uid="uid://n1yvyd5die02"]
+
+[ext_resource type="Script" path="res://client.gd" id="1_jfxyl"]
+[ext_resource type="Script" path="res://server.gd" id="2_7f0ko"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("1_jfxyl")
+
+[node name="LineEdit" type="LineEdit" parent="Client"]
+offset_left = 198.0
+offset_top = 131.0
+offset_right = 446.0
+offset_bottom = 164.0
+
+[node name="Server" type="Node" parent="."]
+script = ExtResource("2_7f0ko")
+
+[node name="StartClient" type="Button" parent="."]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 30.0
+offset_right = 198.0
+offset_bottom = 61.0
+text = "Start Client"
+
+[node name="StartServer" type="Button" parent="."]
+layout_mode = 0
+offset_left = 509.0
+offset_top = 30.0
+offset_right = 609.0
+offset_bottom = 61.0
+text = "Start Server"
+
+[node name="SendTestPacket" type="Button" parent="."]
+layout_mode = 0
+offset_left = 102.0
+offset_top = 83.0
+offset_right = 241.0
+offset_bottom = 114.0
+text = "Send Client Test Packet"
+
+[node name="SendServerTestPacket" type="Button" parent="."]
+layout_mode = 0
+offset_left = 459.0
+offset_top = 84.0
+offset_right = 652.0
+offset_bottom = 115.0
+text = "Send Server Test Packet
+"
+
+[node name="JoinLobby" type="Button" parent="."]
+layout_mode = 0
+offset_left = 102.0
+offset_top = 131.0
+offset_right = 191.0
+offset_bottom = 162.0
+text = "Join Lobby
+"
+
+[connection signal="button_down" from="StartClient" to="Client" method="_on_start_client_button_down"]
+[connection signal="button_down" from="StartServer" to="Server" method="_on_start_server_button_down"]
+[connection signal="button_down" from="SendTestPacket" to="Client" method="_on_send_test_packet_button_down"]
+[connection signal="button_down" from="SendServerTestPacket" to="Server" method="_on_send_server_test_packet_button_down"]
+[connection signal="button_down" from="JoinLobby" to="Client" method="_on_join_lobby_button_down"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b15bbrunovs7o"]
+[gd_scene load_steps=5 format=3 uid="uid://b15bbrunovs7o"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_67now"]
 [ext_resource type="Script" path="res://scenes/server_browser.gd" id="2_cthga"]
+[ext_resource type="PackedScene" uid="uid://buaec2ik4hm0j" path="res://server_info.tscn" id="3_xlfaw"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lwqnh"]
 properties/0/path = NodePath(".:tellHostToStartGame")
@@ -31,9 +32,56 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("2_cthga")
+serverInfo = ExtResource("3_xlfaw")
 
 [node name="BroadcastTimer" type="Timer" parent="ServerBrowser"]
-autostart = true
+
+[node name="Label2" type="Label" parent="ServerBrowser"]
+offset_left = 864.0
+offset_top = 18.0
+offset_right = 1120.0
+offset_bottom = 82.0
+text = "Bound to listen port: "
+
+[node name="Panel" type="Panel" parent="ServerBrowser"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 229.0
+offset_right = 606.0
+offset_bottom = 610.0
+
+[node name="ServerInfo" type="HBoxContainer" parent="ServerBrowser/Panel"]
+layout_mode = 2
+offset_top = -2.0
+offset_right = 553.0
+offset_bottom = 65.0
+
+[node name="Name" type="Label" parent="ServerBrowser/Panel/ServerInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="IP" type="Label" parent="ServerBrowser/Panel/ServerInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "IP"
+
+[node name="PlayerCount" type="Label" parent="ServerBrowser/Panel/ServerInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player Count"
+
+[node name="PlayerCount2" type="Label" parent="ServerBrowser/Panel/ServerInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Join
+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ServerBrowser/Panel"]
+layout_mode = 0
+offset_top = 67.0
+offset_right = 554.0
+offset_bottom = 381.0
 
 [node name="StartGameButton" type="Button" parent="."]
 offset_left = 114.0
