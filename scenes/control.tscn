@@ -48,6 +48,7 @@ offset_bottom = 114.0
 text = "Send Client Test Packet"
 
 [node name="SendServerTestPacket" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 459.0
 offset_top = 84.0

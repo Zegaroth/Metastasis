@@ -37,6 +37,7 @@ serverInfo = ExtResource("3_xlfaw")
 [node name="BroadcastTimer" type="Timer" parent="ServerBrowser"]
 
 [node name="Label2" type="Label" parent="ServerBrowser"]
+layout_mode = 0
 offset_left = 864.0
 offset_top = 18.0
 offset_right = 1120.0
