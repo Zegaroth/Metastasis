@@ -9,6 +9,7 @@ enum Message{
 	candidate,
 	offer,
 	answer,
+	removeLobby,
 	checkIn
 }
 
@@ -59,6 +60,7 @@ func _process(delta: float) -> void:
 			if data.message == Message.answer:
 				if rtcPeer.has_peer(data.orgPeer):
 					rtcPeer.get_peer(data.orgPeer).connection.set_remote_description("answer", data.data)
+
 
 func connected(id):
 	rtcPeer.create_mesh(id)
@@ -117,7 +119,7 @@ func iceCandidateCreated(midName, indexName, sdpName, id):
 	peer.put_packet(JSON.stringify(message).to_ascii_buffer())
 	
 func connectToServer(ip):
-	peer.create_client("ws://127.0.0.1:8915")
+	peer.create_client("ws://192.168.1.137:8915")
 	print("Started client!")
 
 
@@ -126,11 +128,19 @@ func _on_start_client_button_down() -> void:
 	pass # Replace with function body.
 
 func _on_send_test_packet_button_down() -> void:
-	ping.rpc()
+	StartGame.rpc()
 	pass # Replace with function body.
-@rpc("any_peer")
-func ping():
-	print("Ping from: "+str(multiplayer.get_remote_sender_id()))
+@rpc("any_peer", "call_local")
+func StartGame():
+	var message = {
+		"message" : Message.removeLobby,
+		"lobbyID" : lobbyValue
+	}
+	peer.put_packet(JSON.stringify(message).to_ascii_buffer())
+	print("Starting game with ID: "+str(multiplayer.get_unique_id()))
+	var scene = load("res://scenes/main.tscn").instantiate()
+	get_tree().root.add_child(scene)
+	#self.hide()
 
 func _on_join_lobby_button_down() -> void:
 	var message = {

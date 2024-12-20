@@ -119,9 +119,11 @@ func _apply_movement_from_input(delta):
 
 #@rpc("any_peer", "call_local", "reliable")
 func _physics_process(delta: float) -> void:
-	if multiplayer.is_server():
-		_apply_movement_from_input(delta)
+	#print(multiplayer.is_server())
+	#if multiplayer.is_server():
+		#_apply_movement_from_input(delta)
 	if not multiplayer.is_server() || GameManager.hostButtonPressed:
+		_apply_movement_from_input(delta)
 		_apply_animations(delta)
 func _input(event):
 	pass

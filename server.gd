@@ -9,6 +9,7 @@ enum Message{
 	candidate,
 	offer,
 	answer,
+	removeLobby,
 	checkIn
 }
 
@@ -41,6 +42,9 @@ func _process(delta):
 			if data.message == Message.offer || data.message == Message.answer || data.message == Message.candidate:
 				print("source id is: "+str(data.orgPeer))
 				sendToPlayer(data.peer, data)
+			if data.message == Message.removeLobby:
+				if lobbies.has(data.lobbyID):
+					lobbies.erase(data.lobbyID)
 
 func peer_connected(id):
 	print("Peer connected: "+str(id))
@@ -106,8 +110,8 @@ func generateRandomString():
 	return result
 
 func startServer():
-	peer.create_server(8915)
-	print("Started server!")
+	peer.create_server(hostPort)
+	print("Started server on port: + "+str(hostPort))
 
 func _on_start_server_button_down() -> void:
 	startServer()

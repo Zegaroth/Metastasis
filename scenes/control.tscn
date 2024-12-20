@@ -45,7 +45,8 @@ offset_left = 102.0
 offset_top = 83.0
 offset_right = 241.0
 offset_bottom = 114.0
-text = "Send Client Test Packet"
+text = "Start Game
+"
 
 [node name="SendServerTestPacket" type="Button" parent="."]
 visible = false
@@ -54,8 +55,7 @@ offset_left = 459.0
 offset_top = 84.0
 offset_right = 652.0
 offset_bottom = 115.0
-text = "Send Server Test Packet
-"
+text = "Start Game"
 
 [node name="JoinLobby" type="Button" parent="."]
 layout_mode = 0

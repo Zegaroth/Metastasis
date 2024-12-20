@@ -79,10 +79,10 @@ spawn_path = NodePath("..")
 
 [node name="SpawnLocations" type="Node2D" parent="."]
 
-[node name="0" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
+[node name="1" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
 position = Vector2(-70, 0)
 
-[node name="1" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
+[node name="2" type="Node2D" parent="SpawnLocations" groups=["spawnpoint"]]
 position = Vector2(50, 0)
 
 [node name="DefaultSpawn" type="Node2D" parent="SpawnLocations"]
