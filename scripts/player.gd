@@ -122,9 +122,11 @@ func _physics_process(delta: float) -> void:
 	#print(multiplayer.is_server())
 	#if multiplayer.is_server():
 		#_apply_movement_from_input(delta)
-	if not multiplayer.is_server() || GameManager.hostButtonPressed:
-		_apply_movement_from_input(delta)
-		_apply_animations(delta)
+	#if not multiplayer.is_server() || GameManager.hostButtonPressed:
+	#	_apply_movement_from_input(delta)
+	#	_apply_animations(delta)
+	_apply_movement_from_input(delta)
+	_apply_animations(delta)
 func _input(event):
 	pass
 

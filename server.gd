@@ -56,6 +56,7 @@ func peer_connected(id):
 	peer.get_peer(id).put_packet(messageBytes)
 	pass
 func peer_disconnected(id):
+	#users.erase(id)
 	pass
 
 func JoinLobby(user):

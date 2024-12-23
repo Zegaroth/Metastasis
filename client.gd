@@ -60,6 +60,7 @@ func _process(delta: float) -> void:
 			if data.message == Message.answer:
 				if rtcPeer.has_peer(data.orgPeer):
 					rtcPeer.get_peer(data.orgPeer).connection.set_remote_description("answer", data.data)
+					
 
 
 func connected(id):

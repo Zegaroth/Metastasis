@@ -37,6 +37,7 @@ func _process(delta):
 	$LifeBar.global_position = $LifeBarPosition.global_position
 
 func move_to_position(target_position: Vector2):
+	#print(is_multiplayer_authority())
 	var motion = position.direction_to(target_position) * current_speed
 	navigation_agent_2d.set_velocity(motion)
 	#$RayCastHolder.look_at(target_position)
