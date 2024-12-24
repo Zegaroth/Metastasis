@@ -23,8 +23,8 @@ func _on_body_entered(body: Node2D) -> void:
 		body.take_damage(damage)
 		#rpc('shoot')
 		
-	#if multiplayer.is_server():
-	queue_free()
+	if multiplayer.is_server():
+		queue_free()
 
 
 

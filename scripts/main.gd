@@ -4,8 +4,8 @@ extends Node2D
 @onready var main: Node2D = $"."
 
 func _ready():
-	#if !multiplayer.is_server():
-	#	return
+	if !multiplayer.is_server():
+		return
 	var index = 1
 	for i in GameManager.players:
 		print(GameManager.players[i])

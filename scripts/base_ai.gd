@@ -45,11 +45,13 @@ func move_to_position(target_position: Vector2):
 		self.transform.x *= -1.0
 		#$LifeBar.scale.x *= -1.0
 		#$LifeBar.pivot_offset.x -= 20
+		$LifeBarPosition.position.x -= 35
 		h_scale=true
 	elif (target_position.x < global_position.x) and h_scale:
 		self.transform.x *= -1.0
 		#$LifeBar.scale.x *= -1.0
 		#$LifeBar.pivot_offset.x += 20
+		$LifeBarPosition.position.x += 35
 		h_scale=false
 	if str(self.transform.x.x) == "-0": self.transform.x.x=0
 	if str(self.transform.x.y) == "-0": self.transform.x.y=0

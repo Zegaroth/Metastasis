@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b15bbrunovs7o"]
+[gd_scene load_steps=4 format=3 uid="uid://b15bbrunovs7o"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_67now"]
-[ext_resource type="Script" path="res://scenes/server_browser.gd" id="2_cthga"]
-[ext_resource type="PackedScene" uid="uid://buaec2ik4hm0j" path="res://server_info.tscn" id="3_xlfaw"]
+[ext_resource type="Script" path="res://Unused/main_menu.gd" id="1_rch4m"]
+[ext_resource type="Script" path="res://Unused/server_browser.gd" id="2_0vaht"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_lwqnh"]
 properties/0/path = NodePath(".:tellHostToStartGame")
@@ -10,7 +9,7 @@ properties/0/spawn = true
 properties/0/replication_mode = 1
 
 [node name="MainMenu" type="Node2D"]
-script = ExtResource("1_67now")
+script = ExtResource("1_rch4m")
 
 [node name="HostButton" type="Button" parent="."]
 offset_left = 108.0
@@ -31,8 +30,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("2_cthga")
-serverInfo = ExtResource("3_xlfaw")
+script = ExtResource("2_0vaht")
 
 [node name="BroadcastTimer" type="Timer" parent="ServerBrowser"]
 

@@ -19,8 +19,8 @@ func _physics_process(delta: float) -> void:
 		shooting = true
 	if !$"../../InputSynchronizer".leftClicked:
 		shooting = false
-	#if shooting and multiplayer.is_server():
-	if shooting:
+	if shooting and multiplayer.is_server():
+	#if shooting:
 		wait(seconds_between_shots)
 		shoot()
 		#shoot.rpc()

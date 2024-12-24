@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Metastasis"
-run/main_scene="res://scenes/control.tscn"
+run/main_scene="res://scenes/steam_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*res://GameManager.gd"
+GameManager="*res://scripts/GameManager.gd"
 
 [display]
 

@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://buaec2ik4hm0j"]
+[gd_scene load_steps=2 format=3 uid="uid://csebr71nx74db"]
 
-[ext_resource type="Script" path="res://scenes/server_info.gd" id="1_nl0aq"]
+[ext_resource type="Script" path="res://Unused/server_info.gd" id="1_pc0u7"]
 
 [node name="ServerInfo" type="HBoxContainer"]
-script = ExtResource("1_nl0aq")
+script = ExtResource("1_pc0u7")
 
 [node name="Name" type="Label" parent="."]
 layout_mode = 2

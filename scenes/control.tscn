@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://n1yvyd5die02"]
+[gd_scene load_steps=3 format=3 uid="uid://xhqx15hmie74"]
 
-[ext_resource type="Script" path="res://client.gd" id="1_jfxyl"]
-[ext_resource type="Script" path="res://server.gd" id="2_7f0ko"]
+[ext_resource type="Script" path="res://Unused/client.gd" id="1_jfxyl"]
+[ext_resource type="Script" path="res://Unused/server.gd" id="2_7f0ko"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
