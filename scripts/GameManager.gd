@@ -5,7 +5,8 @@ var players = {}
 var index = 1
 
 const SERVER_PORT = 8080
-const SERVER_IP = "127.0.0.1"
+#const SERVER_IP = "127.0.0.1"
+const SERVER_IP = "192.168.1.137"
 
 func host():
 	print("Starting host!")
@@ -17,7 +18,7 @@ func host():
 	
 	multiplayer.peer_connected.connect(_add_player)
 	multiplayer.peer_disconnected.connect(_delete_player)
-	_add_player(1)
+	#_add_player(1)
 
 func join():
 	print("Joining game!")
@@ -33,10 +34,19 @@ func _add_player(id: int):
 			"id": id,
 			"index": index
 		}
-		index += index
+		index += 1
 	#if multiplayer.is_server():
 	#	for i in GameManager.players:
 	#		sendPlayerInfo.rpc(GameManager.players[i].name, i)
 func _delete_player(id: int):
 	print("Player %s left the game!" % id)
+	#remove player from dictionary
+	if GameManager.players.has(id):
+		GameManager.players.erase(id)
+		index -= 1
+		#the other players need to have their indexes reset
+		var x : int = 1
+		for i in GameManager.players:
+			GameManager.players[i].index = x
+			x += 1
 	pass
